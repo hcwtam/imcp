@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'"
+    />
+    <link href="./styles.css" rel="stylesheet" />
+    <title>imcp - Image copy</title>
+  </head>
+  <body>
+    <main>
+      <div class="input-container">
+        <div>
+          <label for="start">Start date:</label>
+          <input type="date" id="start" name="start" required />
+        </div>
+
+        <div>
+          <label for="end">End date:</label>
+          <input type="date" id="end" name="end" required />
+        </div>
+      </div>
+
+      <canvas id="progress-bar" width="400" height="400"></canvas>
+
+      <button id="button">Copy Images</button>
+
+      <div id="panel">
+        <div class="panel-item">
+          <h6>Items</h6>
+          <div id="items">13 of 200</div>
+        </div>
+        <div class="divider"></div>
+        <div class="panel-item">
+          <h6>Size</h6>
+          <div id="size">23 MB</div>
+        </div>
+        <div class="divider"></div>
+        <div class="panel-item">
+          <h6>Time left</h6>
+          <div id="time-left">0:59</div>
+        </div>
+      </div>
+      <script src="./renderer.js"></script>
+    </main>
+  </body>
+</html>

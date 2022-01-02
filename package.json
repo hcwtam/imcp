@@ -1,0 +1,22 @@
+{
+  "name": "immv",
+  "version": "1.0.0",
+  "description": "A minimal Electron application for transfer images from android phone to computer",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/electron/electron-quick-start",
+  "keywords": [
+    "Electron",
+    "quick",
+    "start",
+    "tutorial",
+    "demo"
+  ],
+  "author": "hcwtam",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^16.0.5"
+  }
+}
