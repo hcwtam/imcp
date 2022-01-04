@@ -1,6 +1,8 @@
 const { ipcRenderer, contextBridge } = require("electron");
 
-window.ipcRenderer = ipcRenderer;
 contextBridge.exposeInMainWorld("api", {
-  selectDirectory: () => window.ipcRenderer.send("selectDirectory"),
+  selectSrcDirectory: () => ipcRenderer.send("selectSrcDirectory"),
+  srcDir: (func) => ipcRenderer.on("srcDir", (_,...args) => func(...args)),
+  selectTrgDirectory: () => ipcRenderer.send("selectTrgDirectory"),
+  trgDir: (func) => ipcRenderer.on("trgDir", (_,...args) => func(...args)),
 });

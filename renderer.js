@@ -4,6 +4,7 @@ const canvas = document.getElementById("progress-bar");
 const context = canvas.getContext("2d");
 const sourceButton = document.getElementById("source");
 const targetButton = document.getElementById("target");
+const targetPath = document.getElementById("target-path");
 const button = document.getElementById("button");
 const panel = document.getElementById("panel");
 const items = document.getElementById("items");
@@ -61,13 +62,31 @@ function progressBar() {
 let bar = setInterval(progressBar, 5);
 
 // select directory
+let srcDir, trgDir;
+
 sourceButton.onclick = () => {
-  window.api.selectDirectory();
+  window.api.selectSrcDirectory();
 };
 
+window.api.srcDir((data) => {
+  srcDir = data;
+  if (srcDir) {
+    sourceButton.title = srcDir;
+  }
+});
+
 targetButton.onclick = () => {
-  window.api.selectDirectory();
+  window.api.selectTrgDirectory();
 };
+
+window.api.trgDir((data) => {
+  trgDir = data;
+  if (trgDir) {
+    targetPath.textContent = getFileName(trgDir);
+    targetButton.title = trgDir;
+    targetPath.title = trgDir;
+  }
+});
 
 // panel
 let showPanel = false;
@@ -80,3 +99,9 @@ button.onclick = () => {
   button.style.display = "none";
   panel.style.display = "flex";
 };
+
+// utils
+function getFileName(path) {
+  const array = path.split("/");
+  return "/" + array[array.length - 1];
+}

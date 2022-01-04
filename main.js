@@ -13,12 +13,32 @@ function createWindow() {
   });
 
   // allow opening directory
-  let dir;
+  let srcDir, trgDir;
 
-  ipcMain.on("selectDirectory", function () {
-    dir = dialog.showOpenDialog(mainWindow, {
-      properties: ["openDirectory"],
-    });
+  ipcMain.on("selectSrcDirectory", function () {
+    dialog
+      .showOpenDialog(mainWindow, {
+        properties: ["openDirectory"],
+      })
+      .then((res) => {
+        if (res && !res.canceled) srcDir = res.filePaths[0];
+      })
+      .then(() => {
+        mainWindow.webContents.send("srcDir", srcDir);
+      });
+  });
+
+  ipcMain.on("selectTrgDirectory", function () {
+    dialog
+      .showOpenDialog(mainWindow, {
+        properties: ["openDirectory"],
+      })
+      .then((res) => {
+        if (res && !res.canceled) trgDir = res.filePaths[0];
+      })
+      .then(() => {
+        mainWindow.webContents.send("trgDir", trgDir);
+      });
   });
 
   // and load the index.html of the app.
