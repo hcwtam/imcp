@@ -22,10 +22,12 @@ startInput.addEventListener("change", (event) => {
     endInput.setAttribute("min", startDateValue);
     endDateValue = "";
   }
+  console.log(startDateValue);
 });
 
 endInput.addEventListener("change", (event) => {
   endDateValue = event.target.value;
+  console.log(endDateValue);
 });
 
 // progress bar
@@ -72,6 +74,7 @@ window.api.srcDir((data) => {
   srcDir = data;
   if (srcDir) {
     sourceButton.title = srcDir;
+    sourceButton.style.backgroundColor = "#d7ecf7";
   }
 });
 
@@ -83,8 +86,9 @@ window.api.trgDir((data) => {
   trgDir = data;
   if (trgDir) {
     targetPath.textContent = getFileName(trgDir);
-    targetButton.title = trgDir;
     targetPath.title = trgDir;
+    targetButton.title = trgDir;
+    targetButton.style.backgroundColor = "#d7ecf7";
   }
 });
 
@@ -96,6 +100,7 @@ if (!showPanel) {
 
 button.onclick = () => {
   showPanel = true;
+  window.api.copyFiles();
   button.style.display = "none";
   panel.style.display = "flex";
 };

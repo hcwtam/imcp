@@ -1,8 +1,29 @@
 const { ipcRenderer, contextBridge } = require("electron");
 
 contextBridge.exposeInMainWorld("api", {
-  selectSrcDirectory: () => ipcRenderer.send("selectSrcDirectory"),
-  srcDir: (func) => ipcRenderer.on("srcDir", (_,...args) => func(...args)),
-  selectTrgDirectory: () => ipcRenderer.send("selectTrgDirectory"),
-  trgDir: (func) => ipcRenderer.on("trgDir", (_,...args) => func(...args)),
+  selectSrcDirectory,
+  srcDir,
+  selectTrgDirectory,
+  trgDir,
+  copyFiles,
 });
+
+function selectSrcDirectory() {
+  ipcRenderer.send("selectSrcDirectory");
+}
+
+function srcDir(func) {
+  ipcRenderer.on("srcDir", (_, ...args) => func(...args));
+}
+
+function selectTrgDirectory() {
+  ipcRenderer.send("selectTrgDirectory");
+}
+
+function trgDir(func) {
+  ipcRenderer.on("trgDir", (_, ...args) => func(...args));
+}
+
+function copyFiles() {
+  ipcRenderer.send("copyFiles");
+}

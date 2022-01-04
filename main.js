@@ -1,6 +1,7 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, ipcMain, dialog } = require("electron");
 const path = require("path");
+const fs = require("fs");
 
 function createWindow() {
   // Create the browser window.
@@ -15,37 +16,55 @@ function createWindow() {
   // allow opening directory
   let srcDir, trgDir;
 
-  ipcMain.on("selectSrcDirectory", function () {
-    dialog
-      .showOpenDialog(mainWindow, {
-        properties: ["openDirectory"],
-      })
-      .then((res) => {
-        if (res && !res.canceled) srcDir = res.filePaths[0];
-      })
-      .then(() => {
-        mainWindow.webContents.send("srcDir", srcDir);
-      });
-  });
+  ipcMain.on("selectSrcDirectory", selectSrcDirectory);
+  ipcMain.on("selectTrgDirectory", selectTrgDirectory);
 
-  ipcMain.on("selectTrgDirectory", function () {
-    dialog
-      .showOpenDialog(mainWindow, {
-        properties: ["openDirectory"],
-      })
-      .then((res) => {
-        if (res && !res.canceled) trgDir = res.filePaths[0];
-      })
-      .then(() => {
-        mainWindow.webContents.send("trgDir", trgDir);
-      });
-  });
+  // move file
+  ipcMain.on("copyFiles", copyFiles);
 
   // and load the index.html of the app.
   mainWindow.loadFile("index.html");
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
+
+  // utils
+function selectSrcDirectory() {
+  dialog
+    .showOpenDialog(mainWindow, {
+      properties: ["openDirectory"],
+    })
+    .then((res) => {
+      if (res && !res.canceled) srcDir = res.filePaths[0];
+    })
+    .then(() => {
+      mainWindow.webContents.send("srcDir", srcDir);
+    });
+}
+
+function selectTrgDirectory() {
+  dialog
+    .showOpenDialog(mainWindow, {
+      properties: ["openDirectory"],
+    })
+    .then((res) => {
+      if (res && !res.canceled) trgDir = res.filePaths[0];
+    })
+    .then(() => {
+      mainWindow.webContents.send("trgDir", trgDir);
+    });
+}
+
+function copyFiles() {
+  const file = "test";
+  const srcFile = srcDir + "/" + file;
+  const destFile = trgDir + "/" + file;
+
+  fs.copyFile(srcFile, destFile, (err) => {
+    if (err) throw err;
+    console.log("File copied succesfully");
+  });
+}
 }
 
 // This method will be called when Electron has finished
