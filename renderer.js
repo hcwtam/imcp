@@ -2,6 +2,8 @@ const startInput = document.getElementById("start");
 const endInput = document.getElementById("end");
 const canvas = document.getElementById("progress-bar");
 const context = canvas.getContext("2d");
+const sourceButton = document.getElementById("source");
+const targetButton = document.getElementById("target");
 const button = document.getElementById("button");
 const panel = document.getElementById("panel");
 const items = document.getElementById("items");
@@ -58,6 +60,15 @@ function progressBar() {
 
 let bar = setInterval(progressBar, 5);
 
+// select directory
+sourceButton.onclick = () => {
+  window.api.selectDirectory();
+};
+
+targetButton.onclick = () => {
+  window.api.selectDirectory();
+};
+
 // panel
 let showPanel = false;
 if (!showPanel) {
@@ -68,6 +79,4 @@ button.onclick = () => {
   showPanel = true;
   button.style.display = "none";
   panel.style.display = "flex";
-
-}
-
+};
