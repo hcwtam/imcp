@@ -17,12 +17,13 @@ button {
 }
 
 button:hover {
-  opacity: 0.9;
+  background-color: #bbb;
 }
 
 button:active {
   background-color: #bbb;
 }
+
 
 label {
   display: block;
@@ -94,6 +95,13 @@ canvas {
   border-radius: 10px;
   color: #fff;
   margin: 0 auto;
+}
+
+#button:disabled {
+  cursor: not-allowed;
+  opacity: 1;
+  background-color: #eee;
+  color: #333;
 }
 
 #panel {

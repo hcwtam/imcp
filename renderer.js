@@ -16,18 +16,26 @@ let startDateValue, endDateValue;
 
 startInput.addEventListener("change", (event) => {
   startDateValue = event.target.value;
-  if (!endDateValue) endInput.setAttribute("min", startDateValue);
+  console.log(startDateValue);
+  if (!endDateValue) {
+    endInput.setAttribute("min", startDateValue);
+    button.disabled = true;
+    return;
+  }
   if (endDateValue && new Date(endDateValue) < new Date(startDateValue)) {
     endInput.value = "";
     endInput.setAttribute("min", startDateValue);
     endDateValue = "";
+    button.disabled = true;
+  } else if (new Date(endDateValue) >= new Date(startDateValue)) {
+    button.disabled = false;
   }
-  console.log(startDateValue);
 });
 
 endInput.addEventListener("change", (event) => {
   endDateValue = event.target.value;
   console.log(endDateValue);
+  if (startDateValue) button.disabled = false;
 });
 
 // progress bar
