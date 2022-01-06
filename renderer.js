@@ -11,9 +11,12 @@ const items = document.getElementById("items");
 const size = document.getElementById("size");
 const timeLeft = document.getElementById("time-left");
 
-// date states
+// states
 let startDateValue, endDateValue;
+let srcDir, trgDir;
+let showPanel = false;
 
+// select dates
 startInput.addEventListener("change", (event) => {
   startDateValue = event.target.value;
   console.log(startDateValue);
@@ -27,7 +30,11 @@ startInput.addEventListener("change", (event) => {
     endInput.setAttribute("min", startDateValue);
     endDateValue = "";
     button.disabled = true;
-  } else if (new Date(endDateValue) >= new Date(startDateValue)) {
+  } else if (
+    new Date(endDateValue) >= new Date(startDateValue) &&
+    srcDir &&
+    trgDir
+  ) {
     button.disabled = false;
   }
 });
@@ -35,7 +42,7 @@ startInput.addEventListener("change", (event) => {
 endInput.addEventListener("change", (event) => {
   endDateValue = event.target.value;
   console.log(endDateValue);
-  if (startDateValue) button.disabled = false;
+  if (startDateValue && srcDir && trgDir) button.disabled = false;
 });
 
 // progress bar
@@ -72,8 +79,6 @@ function progressBar() {
 let bar = setInterval(progressBar, 5);
 
 // select directory
-let srcDir, trgDir;
-
 sourceButton.onclick = () => {
   window.api.selectSrcDirectory();
 };
@@ -84,6 +89,7 @@ window.api.srcDir((data) => {
     sourceButton.title = srcDir;
     sourceButton.style.backgroundColor = "#d7ecf7";
   }
+  if (startDateValue && endDateValue) button.disabled = false;
 });
 
 targetButton.onclick = () => {
@@ -98,17 +104,18 @@ window.api.trgDir((data) => {
     targetButton.title = trgDir;
     targetButton.style.backgroundColor = "#d7ecf7";
   }
+  if (startDateValue && endDateValue) button.disabled = false;
 });
 
 // panel
-let showPanel = false;
 if (!showPanel) {
   panel.style.display = "none";
 }
 
+// submit
 button.onclick = () => {
   showPanel = true;
-  window.api.copyFiles();
+  window.api.copyFiles(startDateValue, endDateValue);
   button.style.display = "none";
   panel.style.display = "flex";
 };

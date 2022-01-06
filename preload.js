@@ -24,6 +24,6 @@ function trgDir(func) {
   ipcRenderer.on("trgDir", (_, ...args) => func(...args));
 }
 
-function copyFiles() {
-  ipcRenderer.send("copyFiles");
+function copyFiles(startDate, endDate) {
+  ipcRenderer.send("copyFiles", startDate, endDate);
 }

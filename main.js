@@ -7,7 +7,7 @@ function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 600,
-    height: 590,
+    height: 600,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
@@ -29,42 +29,44 @@ function createWindow() {
   // mainWindow.webContents.openDevTools()
 
   // utils
-function selectSrcDirectory() {
-  dialog
-    .showOpenDialog(mainWindow, {
-      properties: ["openDirectory"],
-    })
-    .then((res) => {
-      if (res && !res.canceled) srcDir = res.filePaths[0];
-    })
-    .then(() => {
-      mainWindow.webContents.send("srcDir", srcDir);
-    });
-}
+  function selectSrcDirectory() {
+    dialog
+      .showOpenDialog(mainWindow, {
+        properties: ["openDirectory"],
+      })
+      .then((res) => {
+        if (res && !res.canceled) srcDir = res.filePaths[0];
+      })
+      .then(() => {
+        mainWindow.webContents.send("srcDir", srcDir);
+      });
+  }
 
-function selectTrgDirectory() {
-  dialog
-    .showOpenDialog(mainWindow, {
-      properties: ["openDirectory"],
-    })
-    .then((res) => {
-      if (res && !res.canceled) trgDir = res.filePaths[0];
-    })
-    .then(() => {
-      mainWindow.webContents.send("trgDir", trgDir);
-    });
-}
+  function selectTrgDirectory() {
+    dialog
+      .showOpenDialog(mainWindow, {
+        properties: ["openDirectory"],
+      })
+      .then((res) => {
+        if (res && !res.canceled) trgDir = res.filePaths[0];
+      })
+      .then(() => {
+        mainWindow.webContents.send("trgDir", trgDir);
+      });
+  }
 
-function copyFiles() {
-  const file = "test";
-  const srcFile = srcDir + "/" + file;
-  const destFile = trgDir + "/" + file;
+  function copyFiles(_, startDate, endDate) {
+    console.log(startDate);
+    console.log(endDate);
+    // const file = "test";
+    // const srcFile = srcDir + "/" + file;
+    // const destFile = trgDir + "/" + file;
 
-  fs.copyFile(srcFile, destFile, (err) => {
-    if (err) throw err;
-    console.log("File copied succesfully");
-  });
-}
+    // fs.copyFile(srcFile, destFile, (err) => {
+    //   if (err) throw err;
+    //   console.log("File copied succesfully");
+    // });
+  }
 }
 
 // This method will be called when Electron has finished
