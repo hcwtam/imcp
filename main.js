@@ -56,16 +56,35 @@ function createWindow() {
   }
 
   function copyFiles(_, startDate, endDate) {
-    console.log(startDate);
-    console.log(endDate);
-    // const file = "test";
-    // const srcFile = srcDir + "/" + file;
-    // const destFile = trgDir + "/" + file;
+    const start =
+      startDate.substring(0, 4) +
+      startDate.substring(5, 7) +
+      startDate.substring(8, 10); // original format is yyyy-mm-dd
+    const end =
+      endDate.substring(0, 4) +
+      endDate.substring(5, 7) +
+      endDate.substring(8, 10); // original format is yyyy-mm-dd
 
-    // fs.copyFile(srcFile, destFile, (err) => {
-    //   if (err) throw err;
-    //   console.log("File copied succesfully");
-    // });
+    fs.readdir(srcDir, function (err, files) {
+      if (err) {
+        return console.log("Unable to scan directory: " + err);
+      }
+
+      let filesCount = 0;
+      files.forEach(function (file) {
+        const namePrefix = file.substring(0, 8); // e.g. "20220107"
+        if (+namePrefix >= start && +namePrefix <= end) {
+          const srcFile = srcDir + "/" + file;
+          const destFile = trgDir + "/" + file;
+
+          fs.copyFile(srcFile, destFile, (err) => {
+            if (err) throw err;
+          });
+          filesCount++;
+        }
+      });
+      console.log(`${filesCount} files copied succesfully`);
+    });
   }
 }
 
