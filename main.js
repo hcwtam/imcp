@@ -3,18 +3,24 @@ const { app, BrowserWindow, ipcMain, dialog } = require("electron");
 const path = require("path");
 const fs = require("fs");
 
+const PHONE_PATH = "/run/user/1000/gvfs/"; // assume OS is linux and UID is 1000
+let phoneDir;
+
 function createWindow() {
+  let srcDir = phoneDir;
+  let trgDir;
+
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 600,
     height: 600,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
+      additionalArguments: [phoneDir],
     },
   });
 
   // allow opening directory
-  let srcDir, trgDir;
 
   ipcMain.on("selectSrcDirectory", selectSrcDirectory);
   ipcMain.on("selectTrgDirectory", selectTrgDirectory);
@@ -22,11 +28,11 @@ function createWindow() {
   // move file
   ipcMain.on("copyFiles", copyFiles);
 
+  // on reset
+  ipcMain.on("reset", reset);
+
   // and load the index.html of the app.
   mainWindow.loadFile("index.html");
-
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
 
   // utils
   function selectSrcDirectory() {
@@ -83,15 +89,27 @@ function createWindow() {
           filesCount++;
         }
       });
-      console.log(`${filesCount} files copied succesfully`);
+      mainWindow.webContents.send("success", `${filesCount} files copied succesfully!`);
+      console.log(`${filesCount} files copied succesfully!`);
     });
+  }
+
+  function reset() {
+    srcDir = "";
+    trgDir = "";
   }
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
+  // On app start, look for DCIM directory for phone, set it to srcDir if it's found
+  const files = fs.readdirSync(PHONE_PATH);
+  if (files.length > 0) {
+    phoneDir = PHONE_PATH + files[0] + "/Phone/DCIM/Camera";
+  }
+  
   createWindow();
 
   app.on("activate", function () {

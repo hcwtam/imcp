@@ -6,6 +6,12 @@ contextBridge.exposeInMainWorld("api", {
   selectTrgDirectory,
   trgDir,
   copyFiles,
+  success,
+  reset,
+});
+
+contextBridge.exposeInMainWorld("props", {
+  phoneDir: window.process.argv[window.process.argv.length - 1],
 });
 
 function selectSrcDirectory() {
@@ -26,4 +32,12 @@ function trgDir(func) {
 
 function copyFiles(startDate, endDate) {
   ipcRenderer.send("copyFiles", startDate, endDate);
+}
+
+function success(func) {
+  ipcRenderer.on("success", (_, ...args) => func(...args));
+}
+
+function reset() {
+  ipcRenderer.send("reset");
 }
