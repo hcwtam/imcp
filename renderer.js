@@ -135,9 +135,6 @@ window.api.success((msg) => {
 
 // reset button
 resetButton.onclick = () => {
-  window.api.reset();
-  startDateValue = "";
-  endDateValue = "";
   resetButton.style.display = "none";
   success.innerText = "";
   button.style.display = "block";

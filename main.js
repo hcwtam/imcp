@@ -28,9 +28,6 @@ function createWindow() {
   // move file
   ipcMain.on("copyFiles", copyFiles);
 
-  // on reset
-  ipcMain.on("reset", reset);
-
   // and load the index.html of the app.
   mainWindow.loadFile("index.html");
 
@@ -92,11 +89,6 @@ function createWindow() {
       mainWindow.webContents.send("success", `${filesCount} files copied succesfully!`);
       console.log(`${filesCount} files copied succesfully!`);
     });
-  }
-
-  function reset() {
-    srcDir = "";
-    trgDir = "";
   }
 }
 

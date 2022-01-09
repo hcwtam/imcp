@@ -7,7 +7,6 @@ contextBridge.exposeInMainWorld("api", {
   trgDir,
   copyFiles,
   success,
-  reset,
 });
 
 contextBridge.exposeInMainWorld("props", {
@@ -36,8 +35,4 @@ function copyFiles(startDate, endDate) {
 
 function success(func) {
   ipcRenderer.on("success", (_, ...args) => func(...args));
-}
-
-function reset() {
-  ipcRenderer.send("reset");
 }
